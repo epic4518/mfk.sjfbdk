@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Wish</title>
+    <style>
+        body {
+            margin: 0; height: 100vh; display: flex; justify-content: center; 
+            align-items: center; font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            overflow: hidden; text-align: center;
+        }
+        .card {
+            background: white; padding: 30px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 80%; max-width: 350px;
+            z-index: 10; position: relative;
+        }
+        .hidden { display: none !important; }
+        .btn {
+            background: #ff385c; color: white; border: none; 
+            padding: 15px 30px; border-radius: 50px; cursor: pointer;
+            font-size: 18px; font-weight: bold; margin-top: 20px;
+        }
+        .heart { position: absolute; color: #ff385c; animation: fly 3s linear infinite; }
+        @keyframes fly {
+            0% { transform: translateY(100vh); opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="s1" class="card">
+        <h1 style="color: #ff385c;">❤️ Hi there!</h1>
+        <p>I have a surprise wish for you. Tap below to see it!</p>
+        <button class="btn" onclick="next('s1', 's2')">Open Now</button>
+    </div>
+
+    <div id="s2" class="card hidden">
+        <h1 style="color: #ff385c;">Almost...</h1>
+        <p>This wish is very special. Are you ready?</p>
+        <button class="btn" onclick="next('s2', 's3')">Yes, Reveal it!</button>
+    </div>
+
+    <div id="s3" class="card hidden">
+        <h1 style="color: #ff385c;">✨ Happy Wishing! ✨</h1>
+        <p>I wish you a life full of laughter and love. You are amazing! ❤️</p>
+    </div>
+
+    <script>
+        function next(hideId, showId) {
+            // Try to play music - if it fails, the code keeps running!
+            var audio = document.getElementById('bgMusic');
+            audio.play().catch(e => console.log("Music blocked - that is okay!"));
+
+            // Switch the views
+            document.getElementById(hideId).classList.add('hidden');
+            document.getElementById(showId).classList.remove('hidden');
+
+            // If it's the final page, start the hearts
+            if(showId === 's3') {
+                setInterval(createHeart, 300);
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
